@@ -1,0 +1,101 @@
+{% extends 'homepage.html' %}
+{% block content %}
+
+<style>
+    #codeContainer {
+        display: flex;
+    }
+
+    #lineNumbers {
+        width: 40px;
+        padding: 10px;
+        text-align: right;
+        background-color: #ddd;
+        border-right: 1px solid #ccc;
+        box-sizing: border-box;
+        overflow-y: scroll;
+    }
+
+    #codeInput {
+        flex: 1;
+        height: 300px;
+        font-size: 14px;
+        padding: 10px;
+        margin-bottom: 10px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        overflow-y: scroll;
+    }
+
+    #explanationDiv {
+        padding: 10px;
+        border: 1px solid #ccc;
+        background-color: #f8f8f8;
+        white-space: pre-wrap;
+        border-radius: 5px;
+        overflow-y: scroll;
+    }
+
+    button {
+        padding: 10px;
+        background-color: #4CAF50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+
+</style>
+<div class="page-header">
+    <h3 class="page-title"> Form elements </h3>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Forms</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Form elements</li>
+      </ol>
+    </nav>
+  </div>
+  <div class="row">
+    <div class="col-md-6 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Code</h4>
+          <div id="codeContainer">
+            <div id="lineNumbers"></div>
+            <textarea id="codeInput" placeholder="Type your code..."></textarea>
+        </div>
+       <a href=""> <button type="button" class="btn btn-inverse-primary btn-fw" >Explain</button></a></h1>
+
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Explanation</h4>
+          <div id="explanationDiv"></div>
+        </div>
+      </div>
+    </div>
+    
+{%endblock%}       
+<script>
+    const codeInput = document.getElementById('codeInput');
+    const lineNumbers = document.getElementById('lineNumbers');
+
+    // Populate line numbers
+    codeInput.addEventListener('input', updateLineNumbers);
+
+    function updateLineNumbers() {
+        const lines = codeInput.value.split('\n').length;
+        lineNumbers.innerHTML = Array.from({ length: lines }, (_, i) => i + 1).join('<br>');
+    }                  
+    // Initial update of line numbers
+    updateLineNumbers();
+</script>
