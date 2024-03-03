@@ -65,21 +65,43 @@
 
  <div class="card col-lg-4 mx-auto" style="border-color: #1B3954; margin:130px;">
               <div class="card-body px-5 py-5" >
-                <h3 class="card-title text-left mb-3">Login</h3>
-                <form action="/loginn/"  method="post" class="popup-form">
+                <h3 class="card-title text-left mb-3">Register</h3>
+                <form action="/register/"  method="post" class="popup-form">
                   {% csrf_token %}
                   <div class="form-group">
                     <label>Username</label>
-                    <input type="text" class="form-control p_input" name="name">
+					
+						
+						
+            {{ form.username }}
+            {{ form.username.errors }}
+
+          </div>
+                  <div class="form-group">
+                    <label>Email</label>
+                    {{form.email}}
+                    {{form.email.errors}}
+
                   </div>
+                  <div class="row">
+                    <div class="col">
+                  <div class="form-group">
+                    <label>Create Password</label>
+                    {{ form.password1 }}
+                    {{ form.password1.errors }}
+
+                    </div></div>
+                    <div class="col">
                   
                   <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" class="form-control p_input" name="pswd">
+                    <label>Confirm Password</label>
+                    {{ form.password2 }}
+                    {{ form.password2.errors }}
+
+                       </div></div>               
                   </div>
-                  
                   <div class="text-center">
-                    <button type="submit" class="btn btn-primary btn-block enter-btn">Login</button>
+                    <button type="submit" class="btn btn-primary btn-block enter-btn">Sign Up</button>
                     {% if messages %}
       {{messages}}
     {% endif %}
@@ -90,7 +112,7 @@
                     <button class="btn btn-google col">
                       <i class="mdi mdi-google-plus"></i> Google plus </button>
                   </div> -->
-                  <p class="sign-up">Don't have an Account?<a href="/register_view/"> Sign Up</a></p>
+                  <p class="sign-up text-center">Already have an Account?<a href="/"> Sign In</a></p>
                   <!-- <p class="terms">By creating an account you are accepting our<a href="#"> Terms & Conditions</a></p> -->
                 </form>
               </div>
@@ -115,5 +137,15 @@
     <script src="/static/js/settings.js"></script>
     <script src="/static/js/todolist.js"></script>
     <!-- endinject -->
+    <script>
+      var form_fields=document.getElementsByTagName('input')
+      for (var field in form_fields){
+				form_fields[field].className+='form-control p_input'
+      }
+        var form_fields=document.getElementsByTagName('select')
+      for (var field in form_fields){
+				form_fields[field].className+='form-control p_input'
+		}
+	</script>
   </body>
 </html>
