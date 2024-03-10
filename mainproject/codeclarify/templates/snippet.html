@@ -1,0 +1,29 @@
+
+{% extends 'homepage.html' %}
+{% block content %}
+<!-- <style>
+    .second-div{
+        width: 1000px; 
+        height: 199px; 
+        padding-left: 25px;
+      }
+        
+</style> -->
+<div class="second-div">
+    {% for snippet in var %}
+    <h2>{{snippet.title}}</h2>
+    <p >
+        {{snippet.description}}
+    </p>
+    
+    <div class="col-12 grid-margin">
+       
+                <pre ><code class="language-{{snippet.language}} prism-dark">{{ snippet.code | escape }}</code></pre>
+          
+    </div>
+    
+    <footer> <p>Last updated: <time datetime="2024-02-23">{{snippet.created_at}}</time> · </p> </footer>
+   
+    {% endfor %}
+</div>
+{% endblock %}

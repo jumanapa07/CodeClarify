@@ -1,0 +1,56 @@
+{% extends 'homepage.html' %}
+{% block content %}
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Share Your Code Snippets</h4>
+        <p class="card-description"> java-python-html-C </p>
+        <form class="forms-sample" action="/share/" method="POST">
+          {% csrf_token %}
+         
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+                <label for="exampleInputName1">Title</label>
+                <input type="text" class="form-control" id="exampleInputName1" name="title">
+                           </div></div>
+                           <div class="col">
+  <div class="form-group">
+    <label for="exampleSelectGender">Language</label>
+    <select class="form-control" id="language" onchange="changeEditorMode(this)" name="language">
+      <option value="javascript">Javascript</option>
+      <option value="python">Python</option>
+      <option value="java">Java</option>
+      <option value="css">CSS</option>
+      <option value="android">Android</option>
+    </select>
+                           </div></div>
+              </div>
+         
+          
+          <div class="form-group">
+            <label for="exampleTextarea1">Description</label>
+            <textarea class="form-control" id="exampleTextarea1" rows="4" name="description"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="exampleTextarea1">Code</label>
+            <textarea class="form-control" id="editorcode" rows="4" name="code"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary mr-2" name="submit">Submit</button>
+          <button class="btn btn-dark">Cancel</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- Required Ace Libraries -->
+ <script src="/static/lib/js/ace-editor/src-min/ace.js"></script>
+ <script src="/static/lib/js/ace-editor/src-min/mode-javascript.js"></script>
+ <script src="/static/lib/js/ace-editor/src-min/ext-language_tools.js"></script>
+
+ 
+
+ <!-- Custom Scripts -->
+ <script src="/static/lib/js/editor.js"></script>
+
+{%endblock%}
+ 
