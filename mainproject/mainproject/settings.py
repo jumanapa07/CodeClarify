@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-@^rqg8n!6m*g7nv$s(co4%j6ka1x%4@)o)u)ai(b9_8n#iqde+
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+MODEL_PATH = BASE_DIR /'codeclarify'/ 'models' / 'model_weights.pth'
 
 # Application definition
 
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'codeclarify',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -48,9 +49,17 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'mainproject.urls'
+# APPEND_SLASH = False
+
+CORS_ALLOWED_ORIGINS = [
+    'http://127.0.0.1:8000',
+    # Add other origins as needed
+]
+
 
 TEMPLATES = [
     {

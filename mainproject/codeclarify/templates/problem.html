@@ -8,8 +8,10 @@
         <h3 class="page-title"> {{problem.title}} </h3>
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Tables</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Basic tables</li>
+            <li class="breadcrumb-item"><a href="/home">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="/practice/">Problems</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{problem.id}}</li>
+
           </ol>
         </nav>
       </div>
@@ -36,7 +38,7 @@
               <label for="exampleSelectGender">Language</label>
               <select class="form-control" id="language" onchange="changeEditorMode(this)" name="language">
                 <option value="python">Python</option>
-                <!-- <option value="java">Java</option> -->
+                <option value="java">Java</option>
                 <option value="c++">C++</option>
                 <!-- <option value="android">Android</option> -->
               </select>
@@ -55,7 +57,7 @@
               <div class="template-demo">
                 <button type="button"  id="run" class="btn btn-outline-secondary ">Run</button>
                 <button type="button"  id='submit' class="btn btn-outline-secondary ">Submit</button>
-                <button type="reset" class="btn btn-outline-secondary ">Reset</button>
+                <button type="reset" id="reset" class="btn btn-outline-secondary ">Reset</button>
                 
         
           
@@ -83,15 +85,18 @@
         <div class="row">
         <div class="col-3">
           <div class="card">
-            <button class="btn btn-outline-secondary btn-lg btn-block" value="0"  id="test-case-button-0" onclick="displayDetails(0)">
+            <button type="button" class="test-case-button btn btn-outline-secondary btn-lg btn-block" value="0"  id="test-case-button-0" >
           Test Case 1{{results}}
           </button>
           </div>
           <div class="card">
-            <button class="btn btn-outline-secondary btn-lg btn-block" value="1" id="test-case-button-1" onclick="displayDetails(1)">
+            <button type="button" class="test-case-button btn btn-outline-secondary btn-lg btn-block" value="1" id="test-case-button-1" >
               Test Case 2
             </button>
-            
+           
+            <div id="test-cases-container">
+
+            </div>
             </div>
         </div>
         <div class="col-9 card">
@@ -164,13 +169,10 @@ let editorLib = {
 
         
         var code;
+        document.getElementById('submit').disabled = true;
         // var button = document.getElementById("test-case-button-" +0); // Get the button element
 // console.log(button)
-
-// Function to evaluate test cases
-async function evaluateTestCases() {
-    // Fetch data from the server
-    function getCookie(name) {
+function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {
         var cookies = document.cookie.split(';');
@@ -185,6 +187,12 @@ async function evaluateTestCases() {
     }
     return cookieValue;
 }
+
+// Function to evaluate test cases
+async function evaluateTestCases() {
+  
+ 
+    // Fetch data from the server
     var csrftoken = getCookie('csrftoken');
     var oData = await fetch("/compile/{{challenge}}", {
         method: "POST",
@@ -201,44 +209,40 @@ async function evaluateTestCases() {
     // Parse response data
     var testData = await oData.json();
 
-    // Check if all test cases executed without error
-    var allPassed = testData.results.every(function (result) {
-        return !result.error;
-    });
-
-    // Enable the submit button if all test cases passed and there are at least 2 test cases
-    if (allPassed && testData.results.length >= 2) {
+   
+    
+    if ((testData.results[0]['error'].trim() == '') && (testData.results[1]['error'].trim() == '')) {
+    if ((testData.results[0]['expected_output'].trim() == testData.results[0]['output'].trim()) && (testData.results[1]['expected_output'].trim() == testData.results[1]['output'].trim())) {
         document.getElementById('submit').disabled = false;
     } else {
         document.getElementById('submit').disabled = true;
     }
-
-    // Display details for each test case
-    testData.results.forEach(function (result, index) {
-        displayDetails(index, result);
-    });
 }
 
-// Attach event listener to the 'run' button
-document.getElementById('run').addEventListener("click", function () {
-    evaluateTestCases();
-});
 
-// Attach event listener to the 'submit' button
-document.getElementById('submit').addEventListener("click", function () {
-    // Handle submit button click event
-});
 
-// Attach event listener to the 'reset' button (optional)
-document.getElementById('reset').addEventListener("click", function () {
-    // Handle reset button click event
-});
+for (var i = 0; i < 2; i++) {
+    displayDetails(i, testData.results[i]);
+}
+    // console.log(testData.results[0])
+    displayDetails(0, testData.results[0]);
 
-// Function to display details of each test case
+    // Hide additional test case buttons (if any)
+    // hideAdditionalTestCases(testData.results.length);
+
+    document.querySelectorAll('.test-case-button').forEach(function (button, index) {
+    button.addEventListener("click", function () {
+      
+        displayDetails(index, testData.results[index]);
+    });
+});
+}
+
+// Function to display details of a single test case
 function displayDetails(index, result) {
-    console.log(index, result);
+    // console.log(index, result);
     var button = document.getElementById("test-case-button-" + index); // Get the button element
-    console.log(button);
+    // console.log(button);
 
     if (result['error']) {
         document.getElementById("error").textContent = result['error'];
@@ -261,94 +265,109 @@ function displayDetails(index, result) {
     document.getElementById("input").textContent = result['input'];
 }
 
-        
-//         function displayDetails(index,d) {
-//           console.log(index)
-//   var result = d;
-//   var button = document.getElementById("test-case-button-" + index); // Get the button element
-// console.log(button)
-//   if (result['error']) {
-//     document.getElementById("error").textContent = result['error'];
-//     button.style.backgroundColor = 'red'; // Set button color to red if there's an error
-//   } else {
-//     var output = (result['output'] || '').trim();
-//     var expectedOutput = (result['expected_output'] || '').trim();
-
-//     if (output !== expectedOutput) {
-//       document.getElementById("error").textContent = 'Wrong Answer';
-//       button.style.backgroundColor = 'red'; // Set button color to red for wrong answer
-//     } else {
-//       document.getElementById("error").textContent = 'Success';
-//       button.style.backgroundColor = ''; // Reset button color if successful
+// Function to hide additional test case buttons
+// function hideAdditionalTestCases(totalTestCases) {
+//     for (var i = 2; i < totalTestCases; i++) {
+//         var button = document.getElementById("test-case-button-" + i);
+//         button.style.display = 'none';
 //     }
-//   }
-//   document.getElementById("expected").textContent = result['expected_output'];
-//   document.getElementById("output").textContent = result['output'];
-//   document.getElementById("input").textContent = result['input'];
 // }
 
-// var d;
+// Attach event listener to the 'run' button
+document.getElementById('run').addEventListener("click", function () {
+    evaluateTestCases();
+});
 
-    submit.addEventListener("click", async function (event) {
-      event.preventDefault()
-      // console.log("ho")
-        code = {
+// Attach event listener to the 'submit' button
+additionalTestCasesAdded = false;
+document.getElementById('submit').addEventListener("click", async function () {
+    // Fetch data from the server
+    var csrftoken = getCookie('csrftoken');
+    var oData = await fetch("/compile_submit/{{challenge}}", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrftoken
+        },
+        body: JSON.stringify({
             code: codeEditor.getValue(),
-            
-            lang:lang.value
-        }
-        // console.log(lang.value)
-        function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = cookies[i].trim();
-            // Check if the cookie name matches the desired name
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-
-        var csrftoken = getCookie('csrftoken');
-        var oData = await fetch("/compile/{{challenge}}", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": csrftoken
-            },
-            body: JSON.stringify(code)
+            lang: lang.value
         })
+    });
 
-        // var data = await response.json();
-        // console.log(data.results)
-        // var d = await oData.json()
-        var testData = await oData.json();
-         // Enable the submit button if all test cases passed
-    // if (allPassed && testData.results.length >= 2) {
-    //     document.getElementById('submit').disabled = false;
-    // } else {
-    //     document.getElementById('submit').disabled = true;
-    // }
+    // Parse response data
+    var testData = await oData.json();
 
+    // Enable the submit button if all test cases passed and there are at least 2 test cases
+    if (testData.results.length >= 2) {
+        document.getElementById('submit').disabled = false;
+    } else {
+        document.getElementById('submit').disabled = true;
+    }
+    if (!additionalTestCasesAdded){
+      addAdditionalTestButtons(testData.results.length);
+    additionalTestCasesAdded = true;
+    }
+    
     // Display details for each test case
     testData.results.forEach(function (result, index) {
-        displayDetails(index, result);
+        // Update button color based on execution result
+        updateButtonColor(index, result);
     });
-        
-      //  displayDetails(0,d);
-        // output.value = d.output
-    })
+
+    // Add buttons for additional test cases
+    
+});
+
+// Function to update button color based on execution result
+function updateButtonColor(index, result) {
+  
+    var button = document.getElementById("test-case-button-" + index);
+    if (result['error']) {
+      
+        button.style.backgroundColor = 'red'; // Set button color to red if there's an error
+    } else {
+        var output = (result['output'] || '').trim();
+        var expectedOutput = (result['expected_output'] || '').trim();
+        console.log('color',output,expectedOutput)
+        if (output !== expectedOutput) {
+            console.log(button)
+            button.style.backgroundColor = 'red'; // Set button color to red for wrong answer
+        } else {
+            button.style.backgroundColor = ''; // Reset button color if successful
+        }
+    }
+}
+
+// Function to add buttons for additional test cases
+function addAdditionalTestButtons(numTestCases) {
+    var testCasesContainer = document.getElementById('test-cases-container');
+    for (var i = 2; i < numTestCases; i++) {
+        var button = document.createElement('button');
+        button.type = 'button';
+        button.classList.add('test-case-button', 'btn', 'btn-outline-secondary', 'btn-lg', 'btn-block');
+        button.value = i;
+        button.id = 'test-case-button-' + i;
+        button.textContent = 'Test Case ' + (i + 1);
+        testCasesContainer.appendChild(button);
+    }
+}
+
+
+// Attach event listener to the 'reset' button (optional)
+// document.getElementById('reset').addEventListener("click", function () {
+//     // Handle reset button click event
+// });
+
+// Attach event listener to test case buttons
+
+
     // console.log('h/ii')
-console.log(d)
-// resetCodeBtn.addEventListener('click', () => {
-//     // Clear ace editor
-//     codeEditor.setValue(defaultCode);
-// })
+// console.log(d)
+reset.addEventListener('click', () => {
+    // Clear ace editor
+    codeEditor.setValue(defaultCode);
+})
 
     }
 }
