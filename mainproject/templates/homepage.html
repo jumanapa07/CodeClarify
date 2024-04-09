@@ -146,13 +146,15 @@
             <a href="/language_snippet/css"><button type="button" class="btn btn-lang btn-inverse-primary btn-fw">CSS</button></a>
               <a href="/language_snippet/react"><button type="button" class="btn btn-lang btn-inverse-primary btn-fw">React</button></a>
                 <a href="/language_snippet/nodejs"><button type="button" class="btn btn-lang btn-inverse-primary btn-fw">Node js</button></a>
-                {% for lang in var%}
-                {% if lang.language != 'javascript' and lang.language != 'react' and lang.language != 'css'%}
-                {{lang.id}}
-                <a href="/language_snippet/{{lang.language}}"><button type="button" class="btn btn-lang btn-inverse-primary btn-fw"></button>{{lang.language}}</a>
-                {%endif%}
+                {% for lang in var %}
+    {% if lang.language.strip.lower != 'javascript' and lang.language.strip.lower != 'react' and lang.language.strip.lower != 'css' and lang.language.strip.lower != 'python' %}
+        <!-- {{ lang.id }} -->
+        <a href="/language_snippet/{{ lang.language.strip }}"><button type="button" class="btn btn-lang btn-inverse-primary btn-fw"></button>{{ lang.language }}</a>
+    {% endif %}
+{% endfor %}
+
                 <a href="/explore/"><button type="button" class="btn btn-lang btn-inverse-primary btn-fw">Explore  Collections <i class="mdi mdi-arrow-right"></i></button></a>
-       {%endfor%}
+       
       </div>
     </div>
     {%endblock%}

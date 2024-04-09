@@ -19,6 +19,7 @@ def compile_and_execute_code():
     return execute_code(code, language, inputs)
 
 def execute_code(code, language, inputs=None):
+    
     if language == 'python':
         return execute_python_code(code,inputs)
     elif language == 'cpp':
@@ -92,10 +93,10 @@ def execute_cpp_code(code,inputs):
         else:
             run_result = subprocess.run(["/tmp/temp"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 
-        return run_result.stdout.decode()
+        return {'success': True, 'output': run_result.stdout.decode(), 'error': run_result.stderr.decode()}
     
     except Exception as e:
-        return str(e)
+        return {'success': False, 'error': str(e)}
 
 
 def execute_java_code(code, inputs=None):

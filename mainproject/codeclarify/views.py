@@ -22,17 +22,15 @@ import json
 import requests
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
 # from .utils import evaluate_submission
 # from /models.seq2seq import Seq2Seq  # Adjust the import based on your project structure
+class CodeExplanationView():
+    @method_decorator(csrf_exempt)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
-class CodeExplanationView(View):
-    template_name = 'explanation.html'
-
-    def get(self, request, *args, **kwargs):
-        return render(request, self.template_name)
-
-        
 
     @csrf_exempt
     def post(self, request, *args, **kwargs):
@@ -56,8 +54,8 @@ class CodeExplanationView(View):
     def generate_explanation(self, code):
         # Load the state dictionary
         model_state_dict = torch.load(settings.MODEL_PATH, map_location=torch.device('cuda' if torch.cuda.is_available() else 'cpu'))
-        for key in model_state_dict.keys():
-            print(key)
+        # for key in model_state_dict.keys():
+        #     print(key)
         tokenizer = RobertaTokenizer.from_pretrained('microsoft/codebert-base')
         inputs = tokenizer(code, return_tensors="pt", truncation=True, padding=True)
         # Instantiate your custom Seq2Seq model
@@ -66,18 +64,19 @@ class CodeExplanationView(View):
         config = RobertaConfig.from_pretrained(pretrained_model)
         beam_size = 10
         # self.model = Seq2Seq(config)
+        encoder = RobertaModel.from_pretrained(pretrained_model, config=config)
+        decoder_layer = nn.TransformerDecoderLayer(d_model=config.hidden_size, nhead=config.num_attention_heads)
+        decoder = nn.TransformerDecoder(decoder_layer, num_layers=6)
 
         model = Seq2Seq(
-        encoder=RobertaModel.from_pretrained(pretrained_model, config=config),
-        decoder=nn.TransformerDecoder(nn.TransformerDecoderLayer(d_model=config.hidden_size, nhead=config.num_attention_heads), num_layers=6),
-        config=config,
-        beam_size=beam_size,
-        max_length=max_length,
-        sos_id=tokenizer.cls_token_id,
-        eos_id=tokenizer.sep_token_id
-    )
-        print(model)
-
+            encoder=encoder,
+            decoder=decoder,
+            config=config,
+            beam_size=beam_size,
+            max_length=max_length,
+            sos_id=tokenizer.cls_token_id,
+            eos_id=tokenizer.sep_token_id
+        )
         # Load the state dictionary into the model
         model.load_state_dict(model_state_dict)
 
@@ -161,9 +160,17 @@ def snippet_view(request,id):
     var=CodeSnippet.objects.all().filter(id=id)
     return render(request,'snippet.html',{'var':var})
 def language_snippet(request,language):
-    var=CodeSnippet.objects.all().filter(language=language)
+    var=CodeSnippet.objects.all().filter(language=language.strip())
+    print(var)
     return render(request,'explore.html',{'var':var})
 def explanation(request):
+    if request.method == 'POST':
+        code = request.POST.get('code', '')
+        # result=CodeExplanationView(code)
+        # return render(request,'explanation.html',{'result':result})
+        view = CodeExplanationView()
+        return view.post(request)
+
     return render(request,'explanation.html')
 def share(request):
     if request.method=='POST':
@@ -206,6 +213,7 @@ def compile_and_execute_code(code, language, inputs):
     }
 
     response = requests.post(url, json=data)
+    print(response.json())
     return response.json()
 
 
@@ -230,9 +238,10 @@ def compile_code(request,challenge_id):
         for test_case in test_cases:
             test_input = test_case.input_data
             expected_output = test_case.expected_output
-
+            print(language)
             result = compile_and_execute_code(code, language, test_input)
-            # print(result)
+            print(result)
+            print(test_input)
             result['input'] = test_input  # Include input in the result
             result['expected_output'] = expected_output
             results.append(result)

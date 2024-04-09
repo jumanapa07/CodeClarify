@@ -14,7 +14,6 @@ urlpatterns = [
     path('share/',views.share),
     path('snippet_view/<int:id>',views.snippet_view),
     path('language_snippet/<str:language>',views.language_snippet),
-    path('code-explanation/', views.CodeExplanationView.as_view(), name='code_explanation'),
     ###coding practice ###
     path('practice/',views.practice),
     path('problem_view/<int:id>',views.problem_view),

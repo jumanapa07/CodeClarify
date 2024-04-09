@@ -36,10 +36,10 @@
               <form method="POST" id="code-form" action="">
                 {% csrf_token %}
               <label for="exampleSelectGender">Language</label>
-              <select class="form-control" id="language" onchange="changeEditorMode(this)" name="language">
+              <select class="form-control" id="language"  name="language">
                 <option value="python">Python</option>
-                <option value="java">Java</option>
-                <option value="c++">C++</option>
+                <!-- <option value="java">Java</option> -->
+                <option value="cpp">C++</option>
                 <!-- <option value="android">Android</option> -->
               </select>
                                      </div>
@@ -191,7 +191,7 @@ function getCookie(name) {
 // Function to evaluate test cases
 async function evaluateTestCases() {
   
- 
+  console.log(lang.value);
     // Fetch data from the server
     var csrftoken = getCookie('csrftoken');
     var oData = await fetch("/compile/{{challenge}}", {
@@ -204,6 +204,7 @@ async function evaluateTestCases() {
             code: codeEditor.getValue(),
             lang: lang.value
         })
+        
     });
 
     // Parse response data
@@ -228,7 +229,7 @@ for (var i = 0; i < 2; i++) {
     displayDetails(0, testData.results[0]);
 
     // Hide additional test case buttons (if any)
-    // hideAdditionalTestCases(testData.results.length);
+     hideAdditionalTestCases(testData.results.length);
 
     document.querySelectorAll('.test-case-button').forEach(function (button, index) {
     button.addEventListener("click", function () {
@@ -266,12 +267,12 @@ function displayDetails(index, result) {
 }
 
 // Function to hide additional test case buttons
-// function hideAdditionalTestCases(totalTestCases) {
-//     for (var i = 2; i < totalTestCases; i++) {
-//         var button = document.getElementById("test-case-button-" + i);
-//         button.style.display = 'none';
-//     }
-// }
+ function hideAdditionalTestCases(totalTestCases) {
+    for (var i = 2; i < totalTestCases; i++) {
+        var button = document.getElementById("test-case-button-" + i);
+       button.style.display = 'none';
+  }
+ }
 
 // Attach event listener to the 'run' button
 document.getElementById('run').addEventListener("click", function () {

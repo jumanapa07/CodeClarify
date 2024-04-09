@@ -62,13 +62,18 @@ class CodeSnippet(models.Model):
     def __str__(self):
         return self.title
 class Problem(models.Model):
+    DIFFICULTY_CHOICES = [
+        ('easy', 'Easy'),
+        ('medium', 'Medium'),
+        ('hard', 'Hard'),
+    ]
     title = models.CharField(max_length=100)
     description = models.TextField()
     constraint=models.TextField()
     input_format = models.TextField()
     output_format = models.TextField()
     solution = models.TextField()
-    difficulty = models.TextField()
+    difficulty = models.CharField(max_length=10, choices=DIFFICULTY_CHOICES)
 
     def __str__(self):
         return self.title

@@ -4,12 +4,17 @@
 <div class="row">
     <div class="col-5 grid-margin stretch-card">
         <div class="card">
+            <form id= "codeForm" action="/explanation/" method="post">
+                {% csrf_token %}
           <div class="card-body">
+
+           
 Code here....<br>
-<textarea class="form-control" id="exampleTextarea1" rows="20"></textarea>
+<textarea class="form-control" id="code" rows="20"></textarea>
 
           </div>
-
+          <button type="submit"  id="submit" class="btn btn-outline-secondary ">Submit</button>
+          </form>
         </div>
     </div>
     <div class="col-5 grid-margin stretch-card">
@@ -32,10 +37,14 @@ Explanation here....
     
     
     <script>
+        document.getElementById('codeForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the default form submission
+        fetchExplanation();
+    });
         function fetchExplanation() {
             // Fetch code from the text area
             var code = document.getElementById('codeTextArea').value;
-
+console.log('hii')
             // Send a POST request to the Django view
             fetch('/code-explanation/', {
                 method: 'POST',
@@ -45,6 +54,7 @@ Explanation here....
                 },
                 body: 'code=' + encodeURIComponent(code),
             })
+            console.log(response.json())
             .then(response => response.json())
             .then(data => {
                 // Display the explanation result
