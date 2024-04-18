@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-@^rqg8n!6m*g7nv$s(co4%j6ka1x%4@)o)u)ai(b9_8n#iqde+
 DEBUG = True
 
 ALLOWED_HOSTS = []
-MODEL_PATH = BASE_DIR /'codeclarify'/ 'models' / 'model_weights.pth'
+MODEL_PATH = BASE_DIR /'codeclarify'/ 'model' / 'model_weights.pth'
 
 # Application definition
 

@@ -1,0 +1,63 @@
+{% extends 'home.html' %}
+{% block content %}
+<div class="content-wrapper" style=" padding: 0.875rem 0rem; margin-left: -10px;">
+      
+    <div class="page-header">
+      
+      <h3 class="page-title"> Submissions </h3>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/home">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page"><a href="/practice/">Problems</a></li>
+          <li class="breadcrumb-item active" aria-current="page">{{problem.id}}</li>
+
+        </ol>
+      </nav>
+    </div>
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+
+      
+       
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th> # </th>
+                <th>User</th>
+                <th> No of Challenges Completed </th>
+                <!-- <th> Status </th> -->
+                <!-- <th> Deadline </th> -->
+              </tr>
+            </thead>
+            <tbody>
+                {% for var in submissions %}
+                
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td> <a href='/challenge/{{var.challenge.id}}'> {{var.challenge}} </a></td>
+                <td> {{var.language}} </td>
+                <td> {{var.date}} 
+                    
+                </td>
+                <td> {% if var.status == 'Accepted' %}
+                    <div class="badge badge-outline-success">{{var.status}}</div>
+                    {% elif var.status == 'Wrong Answer' %}
+                    <div class="badge badge-outline-warning">{{var.status}}</div>
+                    {%else%}
+                    <div class="badge badge-outline-danger">{{var.status}}</div>
+                    {%endif%}
+                </td>
+               
+                
+              </tr>
+              {% endfor %}
+              <tr>
+            </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{%endblock%}

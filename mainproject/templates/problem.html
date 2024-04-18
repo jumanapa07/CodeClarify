@@ -46,7 +46,7 @@
           </div>
           <div class="card-body">
 
-            <textarea id="editorcode" type="text" name="code"></textarea>
+            <textarea id="editorcode" type="text" name="code">{{sub.code}}</textarea>
               
             <h4 class="card-title"></h4>
             
@@ -156,7 +156,7 @@ let editorLib = {
         });
 
         // Set Default Code
-        codeEditor.setValue(defaultCode);
+        // codeEditor.setValue(defaultCode);
         changeEditorMode(document.getElementById("language"));
         // document.getElementById("code-form").addEventListener("submit", function(event) {
         //     // Get the value from Ace editor and set it to the textarea

@@ -99,12 +99,21 @@ class TestCase(models.Model):
     #         raise ValidationError('A problem can have at most 3 test cases.')
     #     super().save(*args, **kwargs)
 class Submission(models.Model):
+    ACCEPTED = 'Accepted'
+    WRONG_ANSWER = 'Wrong Answer'
+    COMPILE_ERROR = 'Compile Error'
+
+    STATUS_CHOICES = [
+        (ACCEPTED, 'Accepted'),
+        (WRONG_ANSWER, 'Wrong Answer'),
+        (COMPILE_ERROR, 'Compile Error')
+    ]
     challenge = models.ForeignKey(Problem, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     code = models.TextField()
-    status=models.TextField()
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES)
     date = models.DateTimeField(auto_now_add=True)
+    language = models.CharField(max_length=100)
 
 
-    def __str__(self):
-        return f'Test Case {self.pk}'
+    

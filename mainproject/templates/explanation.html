@@ -10,7 +10,7 @@
 
            
 Code here....<br>
-<textarea class="form-control" id="code" rows="20"></textarea>
+ <textarea class="form-control" name="code" rows="20" >{{code}}</textarea>
 
           </div>
           <button type="submit"  id="submit" class="btn btn-outline-secondary ">Submit</button>
@@ -22,8 +22,14 @@ Code here....<br>
           <div class="card-body">
 
 Explanation here....
-          </div>
+<br>
+{% if predictions%}
 
+{{predictions.explanation}}
+
+{%endif%}
+          </div>
+         
         </div>
     </div>
 </div>

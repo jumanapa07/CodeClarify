@@ -16,12 +16,16 @@ urlpatterns = [
     path('language_snippet/<str:language>',views.language_snippet),
     ###coding practice ###
     path('practice/',views.practice),
-    path('problem_view/<int:id>',views.problem_view),
+    # path('problem_view/<int:id>',views.problem_view),
     path('challenge/<int:challenge_id>/', views.challenge_detail, name='challenge_detail'),
     path('compile/<int:challenge_id>', views.compile_code, name='compile_code'),
     path('compile_submit/<int:challenge_id>', views.compile_submit, name='compile_code'),
 
     path('result/', views.result, name=''),
+    path('leaderboard/', views.leaderboard, name=''),
+    path('submissions/', views.submissions, name=''),
+    
+
 
 
 

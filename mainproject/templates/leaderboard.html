@@ -1,32 +1,42 @@
 {% extends 'home.html' %}
 {% block content %}
+<div class="content-wrapper" style=" padding: 0.875rem 0rem; margin-left: -10px;">
+
+<div class="page-header">
+      
+    <h3 class="page-title"> Leaderboard </h3>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/home">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="/practice/">Problems</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{problem.id}}</li>
+
+      </ol>
+    </nav>
+  </div>
 <div class="col-lg-12 grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
-        <h4 class="card-title">Practice Coding
-        <!-- <p class="card-description"> Add class <code>.table-bordered</code> -->
-  
-        <a href="/leaderboard/"><button  class="btn btn-primary " style="float: right;  margin-left: 10px; ">Leaderboard</button></a>
 
-        <a href="/submissions/"><button  class="btn btn-primary " style="float: right;">Submissions</button></a></h4>
+        
         <div class="table-responsive">
           <table class="table table-bordered">
             <thead>
               <tr>
                 <th> # </th>
-                <th>Title</th>
-                <th> Difficulty </th>
+                <th>User</th>
+                <th> No of Challenges Completed </th>
                 <!-- <th> Status </th> -->
                 <!-- <th> Deadline </th> -->
               </tr>
             </thead>
             <tbody>
-                {% for var in problems %}
+                {% for var in leaderboard_data %}
                 
               <tr>
                 <td>{{ forloop.counter }}</td>
-                <td> <a href="/challenge/{{var.id}}">{{var.title}} </a></td>
-                <td> {{var.difficulty}} </td>
+                <td> {{var.user}} </td>
+                <td> {{var.total_submissions}} </td>
                 <!-- <td> {{var.status}}
                    <div class="progress">
                     <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
