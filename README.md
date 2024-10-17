@@ -27,10 +27,11 @@ To set up the project locally, follow these steps:
 
 3. **Build and Run Docker Container**:
 
-  ```bash
-  
-  docker build -t codesnip .
-  docker run -p 5000:5000 codesnip
+     ```bash
+     docker build -t codesnip .
+     docker run -p 5000:5000 codesnip
+
+     
 
 4. **Access the Application: Open your web browser and go to http://localhost:5000. **
 
