@@ -23,7 +23,7 @@ To set up the project locally, follow these steps:
    ```bash
    git clone https://github.com/yourusername/codesnip-challenges.git
    cd codesnip-challenges
-2.**Set Up Docker: Ensure Docker is installed and running on your machine.**
+2. **Set Up Docker: Ensure Docker is installed and running on your machine.**
 
 3. **Build and Run Docker Container**:
 
