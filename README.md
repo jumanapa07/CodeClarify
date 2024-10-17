@@ -21,7 +21,7 @@ To set up the project locally, follow these steps:
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/yourusername/codesnip-challenges.git
+   git clone https://github.com/jumanapa07/CodeClarify.git
    cd codesnip-challenges
 2. **Set Up Docker: Ensure Docker is installed and running on your machine.**
 
