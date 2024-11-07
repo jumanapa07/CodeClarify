@@ -36,7 +36,8 @@ To set up the project locally, follow these steps:
 4. **Access the Application: Open your web browser and go to http://localhost:5000. **
 
    Screenshots
-![image](https://github.com/user-attachments/assets/361286e8-bff1-4dd4-9dc2-14ed04931028)
+<img src="https://github.com/user-attachments/assets/361286e8-bff1-4dd4-9dc2-14ed04931028" width="500" height="300" alt="Screenshot">
+
 
 <img src="https://github.com/user-attachments/assets/382865b1-eed9-4bc6-8176-fcf4ac744145" width="500" height="300" alt="Screenshot">
 
