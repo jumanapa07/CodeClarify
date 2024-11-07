@@ -37,5 +37,5 @@ To set up the project locally, follow these steps:
 
    Screenshots
 
-![image](https://github.com/user-attachments/assets/382865b1-eed9-4bc6-8176-fcf4ac744145)
+<img src="https://github.com/user-attachments/assets/382865b1-eed9-4bc6-8176-fcf4ac744145" width="500" height="300" alt="Screenshot">
 
